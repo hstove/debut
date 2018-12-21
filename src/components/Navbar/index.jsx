@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Navbar } from 'react-bulma-components'
+import Navbar from 'react-bulma-components/lib/components/navbar'
 import { withRouter } from 'react-router-dom'
 import { UserContext } from 'components/User/UserProvider'
 
