@@ -1,32 +1,19 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
-import axios from 'axios'
 import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
 import Table from 'react-bulma-components/lib/components/table'
+import requestAllUsers from 'actions/user/requestAllUsers'
 import './stylesheets/_root.scss'
 
 class RootPage extends Component {
-  state = {
-    users: []
-  }
-
-  async componentDidMount() {
-    try {
-      const { data } = await axios.get('https://debut-3fcee.firebaseio.com/users.json')
-      const users = []
-
-      for (const key in data) {
-        users.push({ ...data[key], id: key })
-      }
-
-      this.setState({ users })
-    } catch (e) {
-      console.log(e.message)
-    }
+  componentDidMount() {
+    this.props.requestAllUsers()
   }
 
   onBoxClick = (user) => {
     const { history } = this.props
+
     history.push({
       pathname: `/${user.username}`,
       state: {
@@ -36,7 +23,8 @@ class RootPage extends Component {
   }
 
   render() {
-    const { users } = this.state
+    const { users } = this.props
+
     return (
       <div className="root-page">
         <Table>
@@ -55,4 +43,14 @@ class RootPage extends Component {
   }
 }
 
-export default withRouter(RootPage)
+const mapStateToProps = (state) => {
+  return {
+    users: state.user.users
+  }
+}
+export default connect(mapStateToProps, {
+  requestAllUsers
+})(withRouter(RootPage))
+// export default withRouter(connect(mapStateToProps, {
+//   requestAllUsers
+// })(RootPage))

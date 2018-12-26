@@ -7,10 +7,17 @@ import AdminUsernameRoute from 'pages/admin/_username/route'
 import RootPage from 'pages'
 import UsernamePage from 'pages/username'
 import Navbar from 'components/Navbar'
+import { connect } from 'react-redux'
+import requestSessionUser from 'actions/user/requestSessionUser'
 
 class Routes extends Component {
   static propTypes = {
     userSession: PropTypes.object.isRequired
+  }
+
+  componentDidMount() {
+    const { userSession } = this.props
+    this.props.requestSessionUser(userSession)
   }
 
   render() {
@@ -42,4 +49,6 @@ class Routes extends Component {
   }
 }
 
-export default Routes
+export default connect(null, {
+  requestSessionUser,
+})(Routes)
